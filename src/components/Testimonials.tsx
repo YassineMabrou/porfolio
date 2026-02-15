@@ -16,80 +16,81 @@ const testimonials: Testimonial[] = [
   {
     name: 'Badii Gharbi',
     title: 'CEO',
-    company: 'Vnext Consulting Company',
-    text: 'Yassine delivered exceptional work on our IoT project. His expertise in both frontend and backend development was crucial to our success. Highly recommend!',
+    company: 'VNext Consulting',
+    text: 'Yassine delivered exceptional work on our IoT project. His expertise in both frontend and backend development played a key role in the success of our platform.',
     avatar: '👨‍💼'
   },
   {
-    
     name: 'Leila Gazzeh',
     title: 'University Professor',
-    company: 'Isitcom',
-    text: 'Outstanding developer with deep knowledge of AI and IoT integration. The solutions he provided were scalable and well-architected. A true professional.',
-    avatar: '👩‍💼'
+    company: 'ISITCom',
+    text: 'Yassine studied Cloud Computing and Machine Learning under my supervision. He demonstrated strong analytical thinking and a solid understanding of modern cloud architectures and AI systems.',
+    avatar: '👩‍🏫'
   },
   {
     name: 'Ridha Khelifi',
     title: 'CSO',
-    company: 'Vnext Consulting Company',
-    text: 'Working with Yassine was a game-changer for our platform. His ability to understand complex requirements and deliver clean code is impressive.',
+    company: 'VNext Consulting',
+    text: 'Working with Yassine was a valuable experience. His ability to translate complex requirements into clean and scalable solutions is impressive.',
     avatar: '👨‍💻'
   },
   {
     name: 'Sonia Mili',
     title: 'University Professor',
-    company: 'Isitcom',
-    text: 'Great communication skills and attention to detail. Yassine consistently delivered features on time with high quality. Looking forward to future collaborations.',
-    avatar: '👩‍🔬'
-  },
+    company: 'ISITCom',
+    text: 'Yassine completed the Computer Networking course under my supervision. He built a strong foundation in network architectures, protocols, and practical implementation.',
+    avatar: '👩‍🏫'
+  }
 ];
 
 function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
 
   useEffect(() => {
-    if (!isAutoPlay) return;
-
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [isAutoPlay]);
+  }, [currentIndex]);
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    setIsAutoPlay(false);
+    setCurrentIndex((prev) =>
+      (prev - 1 + testimonials.length) % testimonials.length
+    );
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    setIsAutoPlay(false);
+    setCurrentIndex((prev) =>
+      (prev + 1) % testimonials.length
+    );
   };
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
-    setIsAutoPlay(false);
   };
 
   return (
     <div className="testimonials-container">
       <div className="testimonials-content">
-        <h2>What People Say</h2>
-        <p className="subtitle">Feedback from colleagues and clients</p>
+        <h2>Academic & Professional References</h2>
+        <p className="subtitle">
+          Feedback from professors and professional collaborators
+        </p>
 
         <div className="testimonials-carousel">
           <div className="carousel-inner">
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className={`testimonial-slide ${index === currentIndex ? 'active' : ''}`}
+                className={`testimonial-slide ${
+                  index === currentIndex ? 'active' : ''
+                }`}
               >
                 <div className="testimonial-card">
                   <FormatQuoteIcon className="quote-icon" />
                   <p className="testimonial-text">{testimonial.text}</p>
-                  
+
                   <div className="testimonial-author">
                     <div className="author-avatar">{testimonial.avatar}</div>
                     <div className="author-info">
@@ -103,7 +104,6 @@ function Testimonials() {
             ))}
           </div>
 
-          {/* Navigation Buttons */}
           <button
             className="carousel-button prev"
             onClick={goToPrevious}
@@ -111,6 +111,7 @@ function Testimonials() {
           >
             <NavigateBeforeIcon />
           </button>
+
           <button
             className="carousel-button next"
             onClick={goToNext}
@@ -120,12 +121,13 @@ function Testimonials() {
           </button>
         </div>
 
-        {/* Indicators */}
         <div className="carousel-indicators">
           {testimonials.map((_, index) => (
             <button
               key={index}
-              className={`indicator ${index === currentIndex ? 'active' : ''}`}
+              className={`indicator ${
+                index === currentIndex ? 'active' : ''
+              }`}
               onClick={() => goToSlide(index)}
               aria-label={`Go to testimonial ${index + 1}`}
             />
