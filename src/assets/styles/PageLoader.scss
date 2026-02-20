@@ -1,0 +1,311 @@
+// ============================================
+// Page Loader - Noir Architect Theme
+// Cinematic Brand Reveal
+// ============================================
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+
+  // ============================================
+  // Background
+  // ============================================
+  &__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  // ============================================
+  // Content
+  // ============================================
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    z-index: 1;
+  }
+
+  // ============================================
+  // Brand
+  // ============================================
+  &__brand {
+    text-align: center;
+  }
+
+  &__logo {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__logo-letter {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 6rem);
+    font-weight: 600;
+    color: var(--color-text);
+    opacity: 0;
+    transform: translateY(40px);
+    animation: letterReveal 0.8s var(--ease-out-expo) forwards;
+
+    &:nth-child(1) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: 0.4s;
+      color: var(--color-accent);
+    }
+  }
+
+  &__tagline {
+    overflow: hidden;
+
+    span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--color-text-muted);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s var(--ease-out-expo) 0.8s forwards;
+    }
+  }
+
+  // ============================================
+  // Progress
+  // ============================================
+  &__progress {
+    width: 200px;
+    opacity: 0;
+    animation: fadeUp 0.6s var(--ease-out-expo) 1s forwards;
+  }
+
+  &__progress-track {
+    height: 2px;
+    background: var(--color-border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 2px;
+    transition: width 0.1s ease-out;
+  }
+
+  &__progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  &__progress-text {
+    color: var(--color-text-muted);
+  }
+
+  &__progress-value {
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  // ============================================
+  // Decorative
+  // ============================================
+  &__decorative {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s var(--ease-out-expo) 1.2s forwards;
+  }
+
+  &__year,
+  &__location {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+
+  &__line {
+    width: 40px;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  // ============================================
+  // Corners
+  // ============================================
+  &__corner {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--color-border);
+    opacity: 0;
+    animation: cornerReveal 0.6s var(--ease-out-expo) 0.6s forwards;
+
+    &--tl {
+      top: 2rem;
+      left: 2rem;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    &--tr {
+      top: 2rem;
+      right: 2rem;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    &--bl {
+      bottom: 2rem;
+      left: 2rem;
+      border-right: none;
+      border-top: none;
+    }
+
+    &--br {
+      bottom: 2rem;
+      right: 2rem;
+      border-left: none;
+      border-top: none;
+    }
+  }
+
+  // ============================================
+  // Complete State
+  // ============================================
+  &--complete {
+    .page-loader__content {
+      animation: contentExit 0.6s var(--ease-out-expo) forwards;
+    }
+
+    .page-loader__corner {
+      animation: cornerExit 0.4s var(--ease-out-expo) forwards;
+    }
+  }
+
+  // ============================================
+  // Exiting State - Curtain Effect
+  // ============================================
+  &--exiting {
+    background: transparent;
+  }
+
+  &__curtain {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--color-bg);
+
+    &--left {
+      left: 0;
+      animation: curtainLeft 0.8s var(--ease-out-expo) forwards;
+    }
+
+    &--right {
+      right: 0;
+      animation: curtainRight 0.8s var(--ease-out-expo) forwards;
+    }
+  }
+}
+
+// ============================================
+// Animations
+// ============================================
+@keyframes letterReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cornerReveal {
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes contentExit {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes cornerExit {
+  to {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes curtainLeft {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes curtainRight {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+// ============================================
+// Responsive
+// ============================================
+@media (max-width: 600px) {
+  .page-loader {
+    &__corner {
+      width: 40px;
+      height: 40px;
+
+      &--tl,
+      &--tr,
+      &--bl,
+      &--br {
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+      }
+    }
+
+    &__progress {
+      width: 150px;
+    }
+  }
+}

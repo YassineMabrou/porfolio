@@ -6,19 +6,23 @@ interface StatItem {
   label: string;
   value: number;
   suffix: string;
-  icon?: string;
+  description: string;
 }
 
 const stats: StatItem[] = [
-  { label: 'Projects Completed', value: 8, suffix: '+' },
-  { label: 'Years of Experience', value: 2, suffix: '+' },
-  { label: 'Lines of Code Written', value: 50000, suffix: '+' },
-  { label: 'Technologies Mastered', value: 25, suffix: '+' },
+  { label: 'Projects', value: 8, suffix: '+', description: 'Completed' },
+  { label: 'Years', value: 2, suffix: '+', description: 'Experience' },
+  { label: 'Lines', value: 50, suffix: 'K+', description: 'Code Written' },
+  { label: 'Technologies', value: 25, suffix: '+', description: 'Mastered' },
 ];
 
-const Counter: React.FC<{ target: number; duration?: number; suffix?: string }> = ({ target, duration = 2000, suffix = '' }) => {
+const Counter: React.FC<{ target: number; duration?: number; suffix?: string; inView: boolean }> = ({ 
+  target, 
+  duration = 2000, 
+  suffix = '',
+  inView 
+}) => {
   const [count, setCount] = useState(0);
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const countRef = useRef(false);
 
   useEffect(() => {
@@ -42,31 +46,76 @@ const Counter: React.FC<{ target: number; duration?: number; suffix?: string }> 
   }, [inView, target, duration]);
 
   return (
-    <div ref={ref} className="counter">
-      <span className="counter-value">
-        {count.toLocaleString()}{suffix}
-      </span>
-    </div>
+    <span className="statistics__value">
+      {count.toLocaleString()}{suffix}
+    </span>
   );
 };
 
 function Statistics() {
+  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true });
+
   return (
-    <div className="statistics-container">
-      <div className="statistics-content">
-        <h2>By The Numbers</h2>
-        <p className="subtitle">My journey as a developer at a glance</p>
-        
-        <div className="stats-grid">
+    <section className={`statistics ${inView ? 'statistics--visible' : ''}`} ref={ref}>
+      {/* Background Elements */}
+      <div className="statistics__bg">
+        <div className="statistics__line statistics__line--1" />
+        <div className="statistics__line statistics__line--2" />
+        <div className="statistics__glow" />
+      </div>
+
+      <div className="statistics__container">
+        {/* Left Side - Label */}
+        <div className="statistics__header">
+          <span className="statistics__label">
+            <span className="statistics__label-dot" />
+            Impact
+          </span>
+          <h2 className="statistics__title">
+            By The<br /><em>Numbers</em>
+          </h2>
+          <p className="statistics__subtitle">
+            Metrics that reflect my dedication to craft and continuous growth
+          </p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="statistics__grid">
           {stats.map((stat, index) => (
-            <div key={index} className="stat-card">
-              <Counter target={stat.value} suffix={stat.suffix} />
-              <p className="stat-label">{stat.label}</p>
+            <div 
+              key={index} 
+              className="statistics__card"
+              style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
+            >
+              <span className="statistics__card-number">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              
+              <div className="statistics__card-content">
+                <Counter 
+                  target={stat.value} 
+                  suffix={stat.suffix} 
+                  inView={inView}
+                />
+                <div className="statistics__card-label">
+                  <span className="statistics__card-primary">{stat.label}</span>
+                  <span className="statistics__card-secondary">{stat.description}</span>
+                </div>
+              </div>
+
+              <div className="statistics__card-line" />
             </div>
           ))}
         </div>
       </div>
-    </div>
+
+      {/* Decorative Bottom */}
+      <div className="statistics__footer">
+        <span className="statistics__footer-line" />
+        <span className="statistics__footer-text">Performance Metrics</span>
+        <span className="statistics__footer-line" />
+      </div>
+    </section>
   );
 }
 

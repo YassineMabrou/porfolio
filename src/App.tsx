@@ -11,6 +11,8 @@ import {
   Testimonials,
 } from "./components";
 import ScrollToTop from './components/ScrollToTop';
+import CustomCursor from './components/CustomCursor';
+import PageLoader from './components/PageLoader';
 import FadeIn from './components/FadeIn';
 import './index.scss';
 
@@ -21,6 +23,8 @@ function App() {
         return savedMode || 'dark';
     });
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const handleModeChange = () => {
         setMode(prevMode => {
             const newMode = prevMode === 'dark' ? 'light' : 'dark';
@@ -29,25 +33,33 @@ function App() {
         });
     }
 
+    const handleLoadComplete = () => {
+        setIsLoading(false);
+    };
+
     useEffect(() => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     }, []);
 
     return (
-    <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
-        <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
-        <ScrollToTop />
-        <FadeIn transitionDuration={700}>
-            <Main/>
-            <Expertise/>
-            <Statistics/>
-            <Project/>
-            <Testimonials/>
-            <Timeline/>
-            <Contact/>
-        </FadeIn>
-        <Footer />
-    </div>
+    <>
+        {isLoading && <PageLoader onLoadComplete={handleLoadComplete} />}
+        <CustomCursor />
+        <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'} ${isLoading ? 'is-loading' : ''}`}>
+            <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
+            <ScrollToTop />
+            <FadeIn transitionDuration={700}>
+                <Main/>
+                <Expertise/>
+                <Statistics/>
+                <Project/>
+                <Testimonials/>
+                <Timeline/>
+                <Contact/>
+            </FadeIn>
+            <Footer />
+        </div>
+    </>
     );
 }
 

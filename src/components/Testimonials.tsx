@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import '../assets/styles/Testimonials.scss';
 
 interface Testimonial {
@@ -18,123 +19,186 @@ const testimonials: Testimonial[] = [
     title: 'CEO',
     company: 'VNext Consulting',
     text: 'Yassine delivered exceptional work on our IoT project. His expertise in both frontend and backend development played a key role in the success of our platform.',
-    avatar: '👨‍💼'
+    avatar: 'BG'
   },
   {
     name: 'Leila Gazzeh',
     title: 'University Professor',
     company: 'ISITCom',
     text: 'Yassine studied Cloud Computing and Machine Learning under my supervision. He demonstrated strong analytical thinking and a solid understanding of modern cloud architectures and AI systems.',
-    avatar: '👩‍🏫'
+    avatar: 'LG'
   },
   {
     name: 'Ridha Khelifi',
     title: 'CSO',
     company: 'VNext Consulting',
     text: 'Working with Yassine was a valuable experience. His ability to translate complex requirements into clean and scalable solutions is impressive.',
-    avatar: '👨‍💻'
+    avatar: 'RK'
   },
   {
     name: 'Sonia Mili',
     title: 'University Professor',
     company: 'ISITCom',
     text: 'Yassine completed the Computer Networking course under my supervision. He built a strong foundation in network architectures, protocols, and practical implementation.',
-    avatar: '👩‍🏫'
+    avatar: 'SM'
   }
 ];
 
 function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
+
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+      if (!isAnimating) {
+        setDirection('next');
+        setIsAnimating(true);
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+          setIsAnimating(false);
+        }, 500);
+      }
+    }, 6000);
 
     return () => clearInterval(timer);
-  }, [currentIndex]);
+  }, [isAnimating]);
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) =>
-      (prev - 1 + testimonials.length) % testimonials.length
-    );
+    if (isAnimating) return;
+    setDirection('prev');
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+      setIsAnimating(false);
+    }, 500);
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) =>
-      (prev + 1) % testimonials.length
-    );
+    if (isAnimating) return;
+    setDirection('next');
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      setIsAnimating(false);
+    }, 500);
   };
 
   const goToSlide = (index: number) => {
-    setCurrentIndex(index);
+    if (isAnimating || index === currentIndex) return;
+    setDirection(index > currentIndex ? 'next' : 'prev');
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setIsAnimating(false);
+    }, 500);
   };
 
+  const currentTestimonial = testimonials[currentIndex];
+
   return (
-    <div className="testimonials-container">
-      <div className="testimonials-content">
-        <h2>Academic & Professional References</h2>
-        <p className="subtitle">
-          Feedback from professors and professional collaborators
-        </p>
+    <section className={`testimonials ${inView ? 'testimonials--visible' : ''}`} ref={ref}>
+      {/* Background */}
+      <div className="testimonials__bg">
+        <div className="testimonials__pattern" />
+        <div className="testimonials__glow testimonials__glow--1" />
+        <div className="testimonials__glow testimonials__glow--2" />
+      </div>
 
-        <div className="testimonials-carousel">
-          <div className="carousel-inner">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className={`testimonial-slide ${
-                  index === currentIndex ? 'active' : ''
-                }`}
-              >
-                <div className="testimonial-card">
-                  <FormatQuoteIcon className="quote-icon" />
-                  <p className="testimonial-text">{testimonial.text}</p>
+      <div className="testimonials__container">
+        {/* Header */}
+        <div className="testimonials__header">
+          <span className="testimonials__label">
+            <span className="testimonials__label-line" />
+            Testimonials
+            <span className="testimonials__label-line" />
+          </span>
+          <h2 className="testimonials__title">
+            Words of <em>Appreciation</em>
+          </h2>
+          <p className="testimonials__subtitle">
+            Feedback from professors and professional collaborators
+          </p>
+        </div>
 
-                  <div className="testimonial-author">
-                    <div className="author-avatar">{testimonial.avatar}</div>
-                    <div className="author-info">
-                      <h4>{testimonial.name}</h4>
-                      <p className="author-title">{testimonial.title}</p>
-                      <p className="author-company">{testimonial.company}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {/* Carousel */}
+        <div className="testimonials__carousel">
+          {/* Quote Icon */}
+          <div className="testimonials__quote">
+            <FormatQuoteIcon />
           </div>
 
-          <button
-            className="carousel-button prev"
-            onClick={goToPrevious}
-            aria-label="Previous testimonial"
-          >
-            <NavigateBeforeIcon />
-          </button>
+          {/* Content */}
+          <div className={`testimonials__content ${isAnimating ? `testimonials__content--${direction}` : ''}`}>
+            <p className="testimonials__text">
+              "{currentTestimonial.text}"
+            </p>
 
-          <button
-            className="carousel-button next"
-            onClick={goToNext}
-            aria-label="Next testimonial"
-          >
-            <NavigateNextIcon />
-          </button>
-        </div>
+            <div className="testimonials__author">
+              <div className="testimonials__avatar">
+                {currentTestimonial.avatar}
+              </div>
+              <div className="testimonials__author-info">
+                <h4 className="testimonials__author-name">{currentTestimonial.name}</h4>
+                <p className="testimonials__author-title">{currentTestimonial.title}</p>
+                <p className="testimonials__author-company">{currentTestimonial.company}</p>
+              </div>
+            </div>
+          </div>
 
-        <div className="carousel-indicators">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${
-                index === currentIndex ? 'active' : ''
-              }`}
-              onClick={() => goToSlide(index)}
-              aria-label={`Go to testimonial ${index + 1}`}
+          {/* Progress Bar */}
+          <div className="testimonials__progress">
+            <div 
+              className="testimonials__progress-bar"
+              style={{ width: `${((currentIndex + 1) / testimonials.length) * 100}%` }}
             />
-          ))}
+          </div>
+
+          {/* Navigation */}
+          <div className="testimonials__nav">
+            <button 
+              className="testimonials__nav-btn"
+              onClick={goToPrevious}
+              aria-label="Previous testimonial"
+            >
+              <ArrowBackIcon />
+            </button>
+
+            <div className="testimonials__indicators">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  className={`testimonials__indicator ${index === currentIndex ? 'testimonials__indicator--active' : ''}`}
+                  onClick={() => goToSlide(index)}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button 
+              className="testimonials__nav-btn"
+              onClick={goToNext}
+              aria-label="Next testimonial"
+            >
+              <ArrowForwardIcon />
+            </button>
+          </div>
+
+          {/* Counter */}
+          <div className="testimonials__counter">
+            <span className="testimonials__counter-current">
+              {String(currentIndex + 1).padStart(2, '0')}
+            </span>
+            <span className="testimonials__counter-separator">/</span>
+            <span className="testimonials__counter-total">
+              {String(testimonials.length).padStart(2, '0')}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
