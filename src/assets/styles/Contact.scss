@@ -18,8 +18,14 @@
     color: white;
   }
 
-  fieldset {
+  /* FIXED: Properly target MUI outlined input instead of raw fieldset */
+  .MuiOutlinedInput-root {
     background-color: white;
+  }
+
+  /* Ensure text is visible */
+  .MuiInputBase-input {
+    color: #000;
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import '../assets/styles/Contact.scss';
-// import emailjs from '@emailjs/browser';
+import emailjs from '@emailjs/browser';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 
 function Contact() {
   const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>(''); // kept for user input but not sent
   const [message, setMessage] = useState<string>('');
 
   const [nameError, setNameError] = useState<boolean>(false);
@@ -30,29 +30,35 @@ function Contact() {
     setMessageError(isMessageEmpty);
 
     if (!isNameEmpty && !isEmailEmpty && !isMessageEmpty) {
-      // EmailJS (optional)
-      /*
+      // templateParams must match your EmailJS template variables
       const templateParams = {
-        name,
-        email,
-        message,
+        name: name,                     // matches {{name}}
+        message: message,               // matches {{message}}
+        time: new Date().toLocaleString(), // matches {{time}}
       };
 
+      console.log('Sending EmailJS request:', templateParams);
+
       emailjs
-        .send('service_id', 'template_id', templateParams, 'api_key')
-        .then((response) => {
-          console.log('SUCCESS!', response.status, response.text);
+        .send(
+          'service_p3qeu5s',      // Your Service ID
+          'template_bbwd9bp',     // ✅ Updated Template ID
+          templateParams,
+          'eC1u4sJOKpcfgezqY'    // Your Public Key
+        )
+        .then((result) => {
+          console.log('EmailJS response:', result);
+          alert('Message sent successfully ✅');
+
+          // Reset form
+          setName('');
+          setEmail('');
+          setMessage('');
         })
-        .catch((error) => {
-          console.log('FAILED...', error);
+        .catch((error: any) => {
+          console.error('EmailJS send failed:', error);
+          alert('Failed to send message ❌');
         });
-
-      setName('');
-      setEmail('');
-      setMessage('');
-      */
-
-      console.log('Form ready to send:', { name, email, message });
     }
   };
 
