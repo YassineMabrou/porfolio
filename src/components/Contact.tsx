@@ -124,7 +124,7 @@ function Contact() {
                 </div>
                 <div className="contact__detail-content">
                   <span className="contact__detail-label">Location</span>
-                  <span className="contact__detail-value">Morocco</span>
+                  <span className="contact__detail-value">Tunisia</span>
                 </div>
               </div>
             </div>
