@@ -10,7 +10,7 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { label: 'Projects', value: 8, suffix: '+', description: 'Completed' },
+  { label: 'Projects', value: 9, suffix: '+', description: 'Completed' },
   { label: 'Years', value: 2, suffix: '+', description: 'Experience' },
   { label: 'Lines', value: 50, suffix: 'K+', description: 'Code Written' },
   { label: 'Technologies', value: 25, suffix: '+', description: 'Mastered' },

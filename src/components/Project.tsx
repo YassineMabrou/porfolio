@@ -10,6 +10,7 @@ import mock07 from '../assets/images/mock07.png';
 import mock08 from '../assets/images/mock08.png';
 import mock09 from '../assets/images/mock09.png';
 import mock10 from '../assets/images/mock10.png';
+import mock11 from '../assets/images/mock11.png';
 import calendarPDF from '../assets/images/pdfs/1707581319322.pdf';
 import '../assets/styles/Project.scss';
 
@@ -35,7 +36,18 @@ const projects: ProjectData[] = [
     alt: "Smart Stable",
     tags: ["React", "ESP32", "AI", "IoT", "Python"],
     category: "AI/IoT",
-    year: "2024"
+    year: "2025"
+  },
+    {
+    id: 9,
+    title: "Semantic Rag",
+    description: "Develop a semantic search module that enables querying a vector database using a Retrieval-Augmented Generation (RAG) approach.",
+    image: mock11,
+    link: "https://github.com/YassineMabrou/semantic_rag1",
+    alt: "Semantic Rag",
+    tags: ["Python",  "PostgreSQL", "Docker" , "LLMs" , "Streamlit" ],
+    category: "AI/IoT",
+    year: "2026"
   },
   {
     id: 2,
@@ -57,7 +69,7 @@ const projects: ProjectData[] = [
     alt: "Player Injury Detection",
     tags: ["Node.js", "React", "Arduino", "AI"],
     category: "AI/IoT",
-    year: "2024"
+    year: "2025"
   },
   {
     id: 4,
@@ -68,7 +80,7 @@ const projects: ProjectData[] = [
     alt: "Weather App",
     tags: ["React", "APIs", "UI/UX"],
     category: "Frontend",
-    year: "2023"
+    year: "2025"
   },
   {
     id: 5,
@@ -79,7 +91,7 @@ const projects: ProjectData[] = [
     alt: "E-commerce App",
     tags: ["React", "Node.js", "MongoDB"],
     category: "Full-Stack",
-    year: "2023"
+    year: "2024"
   },
   {
     id: 6,
@@ -101,7 +113,7 @@ const projects: ProjectData[] = [
     alt: "Personal Portfolio",
     tags: ["React", "TypeScript", "SCSS"],
     category: "Frontend",
-    year: "2024"
+    year: "2025"
   },
   {
     id: 8,
